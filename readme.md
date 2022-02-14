@@ -1,10 +1,9 @@
 #Bing Image Scraper
 
 ```py
-import  scraper
+import scraper
 
-linkler = scraper.find_links("araba",10)
-scraper.download_images(linkler,"deneme","ss")
+scraper.download("araba","deneme",10)
 ```
 
 This is a example for my program.
