@@ -49,17 +49,6 @@ def download_images(urls, output_path, word):
         i += 1
 
 
-        pass
-
-    r = 0
-    i = 0
-    for url in urls:
-        response = requests.get(url, stream=True, verify=False)
-        with open('{}//{}_{}.png'.format(output_path, word, str(i)), 'wb') as out_file:
-            shutil.copyfileobj(response.raw, out_file)
-        del response
-        i += 1
-
 
 def download(text,path,iter):
     t1 = threading.Thread(target=download_pre(text,path,iter))
