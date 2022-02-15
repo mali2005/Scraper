@@ -6,7 +6,6 @@ from selenium.webdriver.chrome.options import Options
 import shutil
 from webdriver_manager.chrome import ChromeDriverManager
 import threading
-import cv2
 import os
 chrome_options = Options()
 chrome_options.add_argument("--headless")
