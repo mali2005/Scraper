@@ -6,20 +6,24 @@ from selenium.webdriver.chrome.options import Options
 import shutil
 from webdriver_manager.chrome import ChromeDriverManager
 import threading
+import cv2
 import os
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = 0
 
 
 def find_links(inputs,iters):
     links = []
+    driver = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
     word = inputs.replace(" ", "%20")
     url = 'https://www.bing.com/images/search?q={}'.format(word)
     driver.get(url)
     time.sleep(2)
-    for i in range(iters):
-        driver.execute_script("window.scrollTo(0, {})".format(str(i*1000)))
+    counter = 0
+    page = 0
+    while True:
+        driver.execute_script("window.scrollTo(0, {})".format(str(page*1000)))
         elements = driver.find_elements(By.CLASS_NAME, "mimg")
         for element in elements:
             src = element.get_attribute("src")
@@ -29,7 +33,16 @@ def find_links(inputs,iters):
                         pass
                     else:
                         links.append(src)
+                        counter += 1
+                        if counter == iters:
+                            break
+        else:
+            page += 1
+            continue
+        break
+
     driver.close()
+    del driver
     return links
 
 
@@ -39,14 +52,16 @@ def download_images(urls, output_path, word):
     except Exception:
         pass
 
-    r = 0
-    i = 0
+    i = 1
     for url in urls:
         response = requests.get(url, stream=True, verify=False)
-        with open('{}//{}_{}.png'.format(output_path, word, str(i)), 'wb') as out_file:
+        path = '{}//{}_{}.png'.format(output_path, word, str(i))
+        with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
         i += 1
+
+
 
 
 
