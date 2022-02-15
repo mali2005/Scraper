@@ -1,12 +1,19 @@
 import  requests
 from selenium import webdriver
 import  time
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import shutil
 from webdriver_manager.chrome import ChromeDriverManager
 import threading
 import os
+
+logging.disable(logging.WARNING)
+logging.disable(logging.INFO)
+logging.disable(logging.CRITICAL)
+logging.disable(logging.ERROR)
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 driver = 0
@@ -33,6 +40,7 @@ def find_links(inputs,iters):
                     else:
                         links.append(src)
                         counter += 1
+                        print(counter," images founded.")
                         if counter == iters:
                             break
         else:
@@ -58,6 +66,7 @@ def download_images(urls, output_path, word):
         with open(path, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
+        print(i," images downloaded.")
         i += 1
 
 
